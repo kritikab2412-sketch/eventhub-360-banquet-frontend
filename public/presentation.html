@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventHub 360 - Banquet Upgrade Presentation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-primary: #9e2a2b;
+      --color-primary-hover: #bd3a42;
+      --color-secondary-active: #ffe5e5;
+      --color-bg-gray: #f5f6fa;
+      --color-text-dark: #1e293b;
+      --color-text-secondary: #64748b;
+      --color-gold: #d97706;
+      --font-family: 'Outfit', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: #0f172a;
+      color: #f8fafc;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      user-select: none;
+    }
+
+    /* Presentation Container */
+    .presentation-container {
+      position: relative;
+      width: 90vw;
+      height: 80vh;
+      max-width: 1280px;
+      max-height: 720px;
+      background: #1e293b;
+      border-radius: 24px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      border: 1px solid #334155;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Slides Container */
+    .slides-wrapper {
+      position: relative;
+      flex: 1;
+      width: 100%;
+      height: 100%;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out, transform 0.5s ease-out;
+      transform: scale(0.98);
+      padding: 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+    }
+
+    /* Slide Themes */
+    .slide.theme-dark {
+      background: linear-gradient(135deg, #4c1112 0%, #9e2a2b 100%);
+      color: #ffffff;
+    }
+
+    .slide.theme-light {
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+
+    /* Slide Typography */
+    .slide-title {
+      font-size: 42px;
+      font-weight: 800;
+      margin-bottom: 24px;
+      letter-spacing: -0.5px;
+    }
+
+    .slide.theme-dark .slide-title {
+      color: var(--color-gold);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .slide.theme-light .slide-title {
+      color: var(--color-primary);
+      border-bottom: 2px solid #cbd5e1;
+      padding-bottom: 12px;
+    }
+
+    .slide-subtitle {
+      font-size: 20px;
+      color: #94a3b8;
+      margin-bottom: 32px;
+    }
+
+    /* Content Layout grids */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    /* Content Cards */
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s ease;
+    }
+
+    .slide.theme-light .card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .slide.theme-light .card h3 {
+      color: #1e293b;
+    }
+
+    .card p, .card li {
+      font-size: 14px;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+
+    .slide.theme-light .card p, .slide.theme-light .card li {
+      color: #64748b;
+    }
+
+    .card ul {
+      margin-left: 20px;
+      margin-top: 8px;
+    }
+
+    /* Controls Bar */
+    .controls-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 32px;
+      background: #0f172a;
+      border-top: 1px solid #334155;
+      z-index: 10;
+    }
+
+    .btn-nav {
+      background: #1e293b;
+      color: #ffffff;
+      border: 1px solid #475569;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: var(--font-family);
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .btn-nav:hover {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+
+    .btn-nav:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .progress-dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #475569;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .dot.active {
+      background: var(--color-primary);
+      transform: scale(1.3);
+    }
+
+    .slide-number {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    /* Specific Styles */
+    .status-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--color-gold);
+      color: #fff;
+    }
+
+    .highlight-list li {
+      margin-bottom: 12px;
+      font-size: 16px;
+      list-style-type: none;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .highlight-list li::before {
+      content: "✔";
+      color: var(--color-gold);
+      font-weight: 800;
+    }
+
+    .slide.theme-light .highlight-list li::before {
+      color: var(--color-primary);
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="presentation-container">
+    <div class="slides-wrapper">
+      
+      <!-- Slide 1: Welcome (Dark Theme) -->
+      <div class="slide theme-dark active" id="slide-0">
+        <h1 class="slide-title" style="font-size: 56px;">EVENTHUB 360</h1>
+        <h2 style="font-size: 32px; font-weight: 700; margin-bottom: 16px; color: #fff;">Banquet Management Module Upgrade</h2>
+        <p style="font-size: 18px; color: #cbd5e1; max-width: 700px; line-height: 1.6; margin-bottom: 40px;">
+          Comprehensive implementation review of executive workflows, operations dashboards, automated status engines, client cooperation gateways, and BI analytics.
+        </p>
+        <div>
+          <span class="status-badge" style="background-color: var(--color-gold);">LOCAL SERVER RUNNING</span>
+        </div>
+      </div>
+
+      <!-- Slide 2: Project Objectives -->
+      <div class="slide theme-light" id="slide-1">
+        <h1 class="slide-title">Project Scope & Objectives</h1>
+        <div class="grid-2">
+          <div>
+            <p style="font-size: 18px; line-height: 1.8; margin-bottom: 20px; color: #334155;">
+              The core focus was to transition a mockup banquet panel into a fully functioning, enterprise-ready, premium SaaS operations cockpit.
+            </p>
+            <ul class="highlight-list">
+              <li><strong>Advanced Workflows:</strong> Real-time lifecycles and role-based metrics.</li>
+              <li><strong>E-Signatures & Vault:</strong> Contract workflows and client portal file archives.</li>
+              <li><strong>Zero Dependencies Charts:</strong> High-performance, reactive custom SVGs.</li>
+            </ul>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div class="card">
+              <h3>Design Systems Integrity</h3>
+              <p>Maintained established Burgundy (#9e2a2b), dark slate and light lilac color palette, utilizing responsive grid architectures and Outfit fonts.</p>
+            </div>
+            <div class="card">
+              <h3>Verifiability</h3>
+              <p>Continuous validation via client-side mocks, localStorage persistence, and 100% successful production compilation.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Operations Control Tower -->
+      <div class="slide theme-light" id="slide-2">
+        <h1 class="slide-title">Operations Control Tower</h1>
+        <p class="slide-subtitle">Location: <code>/pages/OperationsControlTower</code></p>
+        <div class="grid-3">
+          <div class="card">
+            <h3>Live Occupancy Tracker</h3>
+            <p>Monitors physical hall utilization rates based on active guest count allocations and room setups.</p>
+          </div>
+          <div class="card">
+            <h3>VIP Arrival List</h3>
+            <p>Monitors check-ins and registration events for premium account guest lists.</p>
+          </div>
+          <div class="card">
+            <h3>Kitchen Delay warning</h3>
+            <p>Flags delayed Kitchen Order Tickets (KOT) in red to trigger chef escalations.</p>
+          </div>
+        </div>
+        <div class="card" style="margin-top: 24px;">
+          <h3>BEO Approval Tracking Chain</h3>
+          <p>Traces authorization gates across Client, Chef, and Sales Managers, with timeline tracking and status updates saved locally.</p>
+        </div>
+      </div>
+
+      <!-- Slide 4: Finance Module -->
+      <div class="slide theme-light" id="slide-3">
+        <h1 class="slide-title">Executive Finance Module</h1>
+        <p class="slide-subtitle">Location: <code>/pages/FinanceDashboard</code></p>
+        <div class="grid-2">
+          <div>
+            <ul class="highlight-list">
+              <li><strong>RBAC Protection:</strong> Modifying payment states, refunds, and collections requires 'Finance' role clearance (others are read-only).</li>
+              <li><strong>Deposit Required Progress:</strong> Visual completion meters tracking collected vs outstanding ratios.</li>
+              <li><strong>Audit ledger logs:</strong> Details method (Wire, Card, Cash), accountant, timestamps, and refund flags.</li>
+            </ul>
+          </div>
+          <div class="card" style="display: flex; flex-direction: column; justify-content: center; gap: 12px;">
+            <h3 style="color: var(--color-primary);">Collection Health</h3>
+            <div style="background: #e2e8f0; height: 16px; border-radius: 8px; overflow: hidden;">
+              <div style="background: var(--color-primary); width: 68%; height: 100%;"></div>
+            </div>
+            <p style="font-weight: 600;">$212,960 Collected / $313,200 Contract Value (68%)</p>
+            <span style="font-size: 11px; color: #64748b;">Ledger integrates active client-side CSV spreadsheet downloads.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Client Portal Sandbox -->
+      <div class="slide theme-light" id="slide-4">
+        <h1 class="slide-title">Client Portal Sandbox</h1>
+        <p class="slide-subtitle">Location: <code>/pages/ClientPortal</code></p>
+        <div class="grid-3">
+          <div class="card">
+            <h3>Event Progress Tracker</h3>
+            <p>Real-time status pipeline rendering: Inquiry ➔ Tentative ➔ Confirmed ➔ BEO Approved.</p>
+          </div>
+          <div class="card">
+            <h3>BEO E-Signature</h3>
+            <p>Sign-off panel to finalize specifications. Updates the database and triggers internal staff alerts.</p>
+          </div>
+          <div class="card">
+            <h3>Secure Document Vault</h3>
+            <p>Drag-and-drop document simulator for vendor contracts, liability insurance, and floorplans.</p>
+          </div>
+        </div>
+        <div class="card" style="margin-top: 24px;">
+          <h3>Client-Organizer Communication Hub</h3>
+          <p>Displays food and beverage catering choices, audio-visual layouts, payment due warnings, and organizer coordinates.</p>
+        </div>
+      </div>
+
+      <!-- Slide 6: Role Dashboards & Automation -->
+      <div class="slide theme-light" id="slide-5">
+        <h1 class="slide-title">Workflow Automation & Role Dashboards</h1>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Role-Based Dashboard KPIs</h3>
+            <p>Switching role configurations dynamically swaps cards & metrics:</p>
+            <ul style="margin-top: 8px;">
+              <li><strong>Banquet Mgr:</strong> Occupancy rates & room setup checklists.</li>
+              <li><strong>Kitchen Mgr:</strong> Meal preparation timelines & culinary profit margins.</li>
+              <li><strong>Finance:</strong> Cash inflow graphs & transaction registries.</li>
+              <li><strong>Sales Mgr:</strong> Lead pipelines & active customer holds.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Workflow Automation Engine</h3>
+            <p>Automated database triggers to coordinate teams:</p>
+            <ul style="margin-top: 8px;">
+              <li><strong>Confirmed Status:</strong> Auto-creates BEO Drafts and sets tasks (e.g. 'Setup round tables' for Banquet Mgr, 'Reconcile F&B menu' for Kitchen Mgr).</li>
+              <li><strong>Approved BEO:</strong> Triggers Finance verification task for contract validation.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: AI Copilot & Seating Coordinator -->
+      <div class="slide theme-light" id="slide-6">
+        <h1 class="slide-title">AI Copilot & Guest Seating Designer</h1>
+        <div class="grid-2">
+          <div class="card">
+            <h3>AI Operations Copilot</h3>
+            <p>Global floating assistant chat sidebar providing instant action recommendations:</p>
+            <ul style="margin-top: 8px;">
+              <li>Propose menus & wine pairings</li>
+              <li>Draft RSVP email reminders</li>
+              <li>Calculate custom budget metrics</li>
+              <li>Draft event schedules</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Drag-and-Drop Seating Designer</h3>
+            <p>Visual table layout manager:</p>
+            <ul style="margin-top: 8px;">
+              <li>Drag guest cards directly onto round tables</li>
+              <li>Visual stars highlighting VIP guests</li>
+              <li>Bulk guest list Excel upload simulator</li>
+              <li>Assignments persist across sessions via local storage</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Business Intelligence & Reports -->
+      <div class="slide theme-light" id="slide-7">
+        <h1 class="slide-title">Business Intelligence & Advanced Reports</h1>
+        <p class="slide-subtitle">Location: <code>/pages/Analytics</code></p>
+        <div class="grid-3">
+          <div class="card">
+            <h3>Seasonal Forecast SVG</h3>
+            <p>Widescreen interactive graph comparing Actual Occupancy (solid burgundy) against AI-projected occupancy (dashed violet).</p>
+          </div>
+          <div class="card">
+            <h3>Conversion Funnel SVG</h3>
+            <p>Centered funnel flow charting conversion drop-off ratios from Lead Inquiry down to Executed Booking.</p>
+          </div>
+          <div class="card">
+            <h3>Event Segment Donut SVG</h3>
+            <p>Interactive pie chart displaying the distribution of Weddings, Corporate Galas, and Conventions.</p>
+          </div>
+        </div>
+        <div class="card" style="margin-top: 24px;">
+          <h3>Active CSV Download Center</h3>
+          <p>Provides fully functional, client-side CSV downloads for: Occupancy Forecast logs, Revenue projection matrices, Top Client profiles, and Food & Beverage profit margin audits.</p>
+        </div>
+      </div>
+
+      <!-- Slide 9: Technical Stack & Demo Status -->
+      <div class="slide theme-light" id="slide-8">
+        <h1 class="slide-title">Technical Architecture & Demo Status</h1>
+        <div class="grid-2">
+          <div>
+            <h3 style="color: var(--color-primary); margin-bottom: 12px;">Underlying Technology Stack</h3>
+            <ul class="highlight-list" style="font-size: 15px;">
+              <li><strong>UI Architecture:</strong> React 19 + TypeScript + Ant Design v6.</li>
+              <li><strong>State Management:</strong> React Query (TanStack) & Context APIs.</li>
+              <li><strong>Styling:</strong> Vanilla CSS Design Tokens (off-white, lilac, burgundy #9e2a2b).</li>
+              <li><strong>Persistence:</strong> LocalStorage synchronizers for offline demo sessions.</li>
+            </ul>
+          </div>
+          <div class="card" style="background: #1e293b; color: #fff;">
+            <h3 style="color: var(--color-gold);">Localhost Environments</h3>
+            <p style="margin-bottom: 8px; color: #94a3b8;">Both local dev instances are fully active:</p>
+            <p style="margin-bottom: 8px;">💻 <strong>Vite Dev Server</strong>: <a href="http://localhost:5173" target="_blank" style="color: var(--color-gold); text-decoration: underline;">http://localhost:5173/</a></p>
+            <p style="margin-bottom: 8px;">📂 <strong>HTTP File Server</strong>: <a href="http://localhost:8000" target="_blank" style="color: var(--color-gold); text-decoration: underline;">http://localhost:8000/</a></p>
+            <p style="margin-bottom: 16px;">📦 <strong>Code Package</strong>: <a href="http://localhost:8000/eventhub-360-banquet-frontend.zip" style="color: var(--color-gold); text-decoration: underline;">eventhub-360-banquet-frontend.zip</a></p>
+            <span class="status-badge" style="background-color: #22c55e;">DEMO READY — 100% COMPILED</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: Conclusion (Dark Theme) -->
+      <div class="slide theme-dark" id="slide-9">
+        <h1 class="slide-title" style="font-size: 56px; text-align: center;">THANK YOU</h1>
+        <h2 style="font-size: 28px; text-align: center; color: #fff; margin-top: 16px;">EventHub 360 - Ready for Demo</h2>
+        <p style="font-size: 16px; text-align: center; color: #94a3b8; margin-top: 40px;">
+          Press Left/Right arrow keys or use bottom controls to navigate this presentation.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Controls Bar -->
+    <div class="controls-bar">
+      <button class="btn-nav" id="btn-prev" onclick="changeSlide(-1)">Previous</button>
+      <div class="progress-dots" id="dots-container"></div>
+      <div class="slide-number" id="slide-num">Slide 1 of 10</div>
+      <button class="btn-nav" id="btn-next" onclick="changeSlide(1)">Next</button>
+    </div>
+  </div>
+
+  <script>
+    const totalSlides = 10;
+    let currentSlide = 0;
+
+    // Build Dots
+    const dotsContainer = document.getElementById('dots-container');
+    for (let i = 0; i < totalSlides; i++) {
+      const dot = document.createElement('div');
+      dot.className = `dot ${i === 0 ? 'active' : ''}`;
+      dot.onclick = () => goToSlide(i);
+      dotsContainer.appendChild(dot);
+    }
+
+    function updateControls() {
+      // Update Buttons
+      document.getElementById('btn-prev').disabled = currentSlide === 0;
+      document.getElementById('btn-next').disabled = currentSlide === totalSlides - 1;
+
+      // Update Dots
+      const dots = document.querySelectorAll('.dot');
+      dots.forEach((dot, index) => {
+        if (index === currentSlide) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+
+      // Update Page Number
+      document.getElementById('slide-num').textContent = `Slide ${currentSlide + 1} of ${totalSlides}`;
+    }
+
+    function changeSlide(direction) {
+      const newSlide = currentSlide + direction;
+      if (newSlide >= 0 && newSlide < totalSlides) {
+        goToSlide(newSlide);
+      }
+    }
+
+    function goToSlide(slideIndex) {
+      // Hide current slide
+      document.getElementById(`slide-${currentSlide}`).classList.remove('active');
+      // Show new slide
+      document.getElementById(`slide-${slideIndex}`).classList.add('active');
+      currentSlide = slideIndex;
+      updateControls();
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'Space') {
+        changeSlide(1);
+      } else if (e.key === 'ArrowLeft') {
+        changeSlide(-1);
+      }
+    });
+
+    updateControls();
+  </script>
+</body>
+</html>
