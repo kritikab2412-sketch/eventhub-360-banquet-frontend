@@ -42,13 +42,13 @@ export const BIAnalytics: React.FC = () => {
       title: 'Gross Revenue',
       dataIndex: 'revenue',
       key: 'revenue',
-      render: (rev: number) => <span style={{ fontWeight: 600, color: '#0f766e' }}>${rev.toLocaleString()}</span>
+      render: (rev: number) => <span style={{ fontWeight: 600, color: '#0f766e' }}>₹{rev.toLocaleString()}</span>
     },
     {
       title: 'Culinary Cost (F&B)',
       dataIndex: 'cost',
       key: 'cost',
-      render: (cost: number) => <span style={{ color: '#dc2626', fontWeight: 500 }}>${cost.toLocaleString()}</span>
+      render: (cost: number) => <span style={{ color: '#dc2626', fontWeight: 500 }}>₹{cost.toLocaleString()}</span>
     },
     {
       title: 'Profit Margin',
@@ -99,20 +99,20 @@ export const BIAnalytics: React.FC = () => {
   };
 
   const handleExportOccupancy = () => {
-    const headers = ["Month", "Year", "Actual Occupancy %", "Forecast Occupancy %", "Estimated Events", "Revenue Goal ($)"];
+    const headers = ["Month", "Year", "Actual Occupancy %", "Forecast Occupancy %", "Estimated Events", "Revenue Goal (₹)"];
     const rows = months.map((month, idx) => [
       month,
       "2026",
       actualOccupancy[idx] !== undefined ? `${actualOccupancy[idx]}%` : "N/A",
       `${forecastOccupancy[idx]}%`,
       Math.round(forecastOccupancy[idx] * 0.3),
-      `$${(forecastOccupancy[idx] * 2200).toLocaleString()}`
+      `₹${(forecastOccupancy[idx] * 2200).toLocaleString()}`
     ]);
     downloadCSV("EventHub_Occupancy_Forecast_Report.csv", headers, rows);
   };
 
   const handleExportRevenue = () => {
-    const headers = ["Revenue Category", "Q1 Actual ($)", "Q2 Actual ($)", "Q3 Projection ($)", "Q4 Projection ($)", "Annual Estimated ($)"];
+    const headers = ["Revenue Category", "Q1 Actual (₹)", "Q2 Actual (₹)", "Q3 Projection (₹)", "Q4 Projection (₹)", "Annual Estimated (₹)"];
     const rows = [
       ["Ballroom Space Rental", "45,000", "52,000", "58,000", "65,000", "220,000"],
       ["Food & Beverage Catering", "85,000", "98,000", "110,000", "125,000", "418,000"],
@@ -124,7 +124,7 @@ export const BIAnalytics: React.FC = () => {
   };
 
   const handleExportClients = () => {
-    const headers = ["Client Name", "Organization", "Events Hosted", "Total Value ($)", "Last Event Date", "Account Status"];
+    const headers = ["Client Name", "Organization", "Events Hosted", "Total Value (₹)", "Last Event Date", "Account Status"];
     const rows = [
       ["Sophia Loren", "Vanderbilt Gala Foundation", "3", "74,500", "2026-05-12", "Active"],
       ["Arthur Pendragon", "Camelot Financial Corp", "5", "125,000", "2026-06-18", "Active"],
@@ -136,7 +136,7 @@ export const BIAnalytics: React.FC = () => {
   };
 
   const handleExportFBCost = () => {
-    const headers = ["Culinary Package", "Base Charge per Head ($)", "Ingredient Cost ($)", "Staffing Overhead ($)", "Profit Yield ($)", "Net Profit Margin %"];
+    const headers = ["Culinary Package", "Base Charge per Head (₹)", "Ingredient Cost (₹)", "Staffing Overhead (₹)", "Profit Yield (₹)", "Net Profit Margin %"];
     const rows = [
       ["Royal Platinum Feast", "125", "38.50", "20.00", "66.50", "53.2%"],
       ["Gourmet Diamond Banquet", "95", "28.00", "16.00", "51.00", "53.6%"],
@@ -200,7 +200,7 @@ export const BIAnalytics: React.FC = () => {
                 <DollarSign size={18} color="#0d9488" />
               </div>
             </div>
-            <h3 style={{ fontSize: '24px', fontWeight: 800, margin: 0, color: '#1e293b' }}>$313,200</h3>
+            <h3 style={{ fontSize: '24px', fontWeight: 800, margin: 0, color: '#1e293b' }}>₹313,200</h3>
             <span style={{ fontSize: '12px', color: '#64748b', fontWeight: 500, display: 'block', marginTop: '6px' }}>
               Progress to target: 89.4%
             </span>

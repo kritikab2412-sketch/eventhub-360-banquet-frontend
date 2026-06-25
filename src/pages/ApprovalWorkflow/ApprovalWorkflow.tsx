@@ -107,7 +107,7 @@ export const ApprovalWorkflow: React.FC = () => {
               <Divider style={{ margin: '12px 0' }} />
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: '12px', color: '#64748b' }}>Estimated Bill (Total Pax):</span>
-                <span style={{ fontSize: '18px', fontWeight: 800, color: '#a8201a' }}>$42,500.00</span>
+                <span style={{ fontSize: '18px', fontWeight: 800, color: '#a8201a' }}>₹42,500.00</span>
               </div>
             </div>
 

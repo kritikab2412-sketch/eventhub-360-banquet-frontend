@@ -22,7 +22,7 @@ export const AIAssistant: React.FC<AIAssistantProps> = ({ inline = false }) => {
   const predefinedPrompts = [
     { label: 'Suggest Menu', icon: <Coffee size={14} />, prompt: 'Suggest a premium culinary menu for a luxury corporate gala of 300 guests.' },
     { label: 'Generate Timeline', icon: <CalendarRange size={14} />, prompt: 'Generate an hourly operational timeline for a wedding banquet starting at 4 PM.' },
-    { label: 'Estimate Budget', icon: <DollarSign size={14} />, prompt: 'Estimate the banquet event budget for 150 guests at $95 per head package rate.' },
+    { label: 'Estimate Budget', icon: <DollarSign size={14} />, prompt: 'Estimate the banquet event budget for 150 guests at ₹95 per head package rate.' },
     { label: 'Summarize BEO', icon: <FileText size={14} />, prompt: 'Provide an executive summary of BEO #8842-A.' }
   ];
 
@@ -43,7 +43,7 @@ export const AIAssistant: React.FC<AIAssistantProps> = ({ inline = false }) => {
 *   **Hors D'oeuvres:** Truffle Arancini with Saffron Aioli, Seared Wagyu Beef Carpaccio Crostini, and Oyster Shooter with Citrus foam.
 *   **Main Courses:** Pan-Seared Chilean Sea Bass with Lemon Herb reduction, and Slow-Roasted Filet Mignon with Asparagus spears.
 *   **Dessert:** Chocolate Dome Melt with Warm Salted Caramel, and Raspberry Mousse Tartlets.
-*   **Estimated Cost:** $85.00 per cover (culinary margin: ~74%).`;
+*   **Estimated Cost:** ₹85.00 per cover (culinary margin: ~74%).`;
       } else if (textToSend.toLowerCase().includes('timeline') || textToSend.toLowerCase().includes('schedule')) {
         botText = `### 📅 AI Suggested Event Timeline: Wedding Banquet
 *   **15:00 - 16:00** — Vendor Setup & AV Sound checks (Imperial Ballroom).
@@ -55,14 +55,14 @@ export const AIAssistant: React.FC<AIAssistantProps> = ({ inline = false }) => {
 *   **22:00 - 23:00** — DJ Live Sets & Late Night Snacks.`;
       } else if (textToSend.toLowerCase().includes('budget') || textToSend.toLowerCase().includes('estimate')) {
         botText = `### 💰 AI Budget Estimation Analysis
-*   **F&B Package Costs:** 150 guests × $95/pax = **$14,250**
-*   **Room Rental Hold Fee:** Zenith Sky Terrace = **$3,500**
-*   **AV & Staging Add-ons:** Projectors, wireless microphones = **$1,200**
-*   **Decor & Furnishing Setup:** Gold Chiavari chairs + linen = **$850**
-*   **Subtotal:** **$19,800**
-*   **Service Charge (18%):** **$3,564**
-*   **Est. Grand Total:** **$23,364.00**
-*   **Minimum Deposit (50%):** **$11,682.00**`;
+*   **F&B Package Costs:** 150 guests × ₹95/pax = **₹14,250**
+*   **Room Rental Hold Fee:** Zenith Sky Terrace = **₹3,500**
+*   **AV & Staging Add-ons:** Projectors, wireless microphones = **₹1,200**
+*   **Decor & Furnishing Setup:** Gold Chiavari chairs + linen = **₹850**
+*   **Subtotal:** **₹19,800**
+*   **Service Charge (18%):** **₹3,564**
+*   **Est. Grand Total:** **₹23,364.00**
+*   **Minimum Deposit (50%):** **₹11,682.00**`;
       } else if (textToSend.toLowerCase().includes('beo') || textToSend.toLowerCase().includes('summarize')) {
         botText = `### 📝 BEO Executive Summary: Ref #8842-A
 *   **Client Name:** Global Tech Solutions (Annual Corporate Gala).

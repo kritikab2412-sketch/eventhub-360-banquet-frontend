@@ -100,7 +100,7 @@ export const BEOGenerator: React.FC = () => {
   // Dynamic calculations
   const calculateTotal = (data: BEO): number => {
     const guestCount = data.clientProfile.guestCount || 0;
-    const foodCost = guestCount * 85; // $85 per pax package rate
+    const foodCost = guestCount * 85; // ₹85 per pax package rate
     const chairCost = (data.decorAndSetup.chairUnits || 0) * 4.5;
     const runnerCost = (data.decorAndSetup.runnerUnits || 0) * 12;
     const avCost = (data.avRequirements.projector ? 450 : 0) + (data.avRequirements.wirelessMicUnits * 75);
@@ -478,8 +478,7 @@ export const BEOGenerator: React.FC = () => {
 
                 <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '12px', textAlign: 'center', marginBottom: '16px' }}>
                   <span style={{ fontSize: '11px', color: '#64748b' }}>Estimated Total</span>
-                  <div style={{ fontSize: '26px', fontWeight: 800, color: '#a8201a', margin: '4px 0' }}>
-                    ${beoData.estimatedTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                  <div style={{ fontSize: '26px', fontWeight: 800, color: '#a8201a', margin: '4px 0' }}>₹{beoData.estimatedTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                   </div>
                   <span style={{ fontSize: '10px', color: '#94a3b8' }}>Excludes service charges & taxes</span>
                 </div>

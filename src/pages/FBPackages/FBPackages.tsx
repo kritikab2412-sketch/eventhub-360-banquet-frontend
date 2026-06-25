@@ -38,7 +38,7 @@ export const FBPackages: React.FC = () => {
       title: 'Cost per Pax',
       dataIndex: 'price',
       key: 'price',
-      render: (price: number) => <span style={{ fontWeight: 600, color: '#a8201a' }}>${price.toFixed(2)}</span>,
+      render: (price: number) => <span style={{ fontWeight: 600, color: '#a8201a' }}>₹{price.toFixed(2)}</span>,
     },
     {
       title: 'Dietary Mappings',
@@ -85,7 +85,7 @@ export const FBPackages: React.FC = () => {
                   <Tag color="red">Popular</Tag>
                 </div>
                 <p style={{ fontSize: '12px', color: '#64748b', marginBottom: '12px' }}>Includes 3 hors d'oeuvres, 2 mains, 2 desserts, free-flow wine and coffee bar.</p>
-                <div style={{ fontSize: '20px', fontWeight: 800, color: '#a8201a' }}>$85.00 <span style={{ fontSize: '11px', color: '#94a3b8', fontWeight: 500 }}>/ pax</span></div>
+                <div style={{ fontSize: '20px', fontWeight: 800, color: '#a8201a' }}>₹85.00 <span style={{ fontSize: '11px', color: '#94a3b8', fontWeight: 500 }}>/ pax</span></div>
               </div>
 
               <div style={{ padding: '16px', border: '1px solid #cbd5e1', borderRadius: '12px' }}>
@@ -94,7 +94,7 @@ export const FBPackages: React.FC = () => {
                   <Tag>Standard</Tag>
                 </div>
                 <p style={{ fontSize: '12px', color: '#64748b', marginBottom: '12px' }}>Includes 2 hors d'oeuvres, 2 mains, 1 dessert, soft beverages and water bar.</p>
-                <div style={{ fontSize: '20px', fontWeight: 800, color: '#1e293b' }}>$65.00 <span style={{ fontSize: '11px', color: '#94a3b8', fontWeight: 500 }}>/ pax</span></div>
+                <div style={{ fontSize: '20px', fontWeight: 800, color: '#1e293b' }}>₹65.00 <span style={{ fontSize: '11px', color: '#94a3b8', fontWeight: 500 }}>/ pax</span></div>
               </div>
 
               <div style={{ padding: '16px', border: '1px solid #cbd5e1', borderRadius: '12px' }}>
@@ -103,7 +103,7 @@ export const FBPackages: React.FC = () => {
                   <Tag>Economy</Tag>
                 </div>
                 <p style={{ fontSize: '12px', color: '#64748b', marginBottom: '12px' }}>Includes 1 hors d'oeuvre, 1 main, 1 dessert, soft beverages.</p>
-                <div style={{ fontSize: '20px', fontWeight: 800, color: '#1e293b' }}>$48.00 <span style={{ fontSize: '11px', color: '#94a3b8', fontWeight: 500 }}>/ pax</span></div>
+                <div style={{ fontSize: '20px', fontWeight: 800, color: '#1e293b' }}>₹48.00 <span style={{ fontSize: '11px', color: '#94a3b8', fontWeight: 500 }}>/ pax</span></div>
               </div>
             </div>
           </Card>

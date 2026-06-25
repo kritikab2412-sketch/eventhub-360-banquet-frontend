@@ -147,15 +147,15 @@ export const Dashboard: React.FC = () => {
     ];
   } else if (role === 'Finance') {
     roleKpiCards = [
-      { key: 'revenue', title: 'Cash Inflow Collection', value: `$${totalPaid.toLocaleString()}`, desc: `Invoice base: $${grossRevenue.toLocaleString()}`, icon: <Wallet size={24} color="#22c55e" /> },
-      { key: 'bookings', title: 'Outstanding Balance Due', value: `$${outstandingBal.toLocaleString()}`, desc: 'Deposit ledger accounts', icon: <DollarSign size={24} color="#ea580c" /> },
-      { key: 'venues', title: 'Overdue Payments', value: `$${overdueBal.toLocaleString()}`, desc: 'Flagged system holds', icon: <AlertTriangle size={24} color="#ef4444" /> },
+      { key: 'revenue', title: 'Cash Inflow Collection', value: `₹${totalPaid.toLocaleString()}`, desc: `Invoice base: ₹${grossRevenue.toLocaleString()}`, icon: <Wallet size={24} color="#22c55e" /> },
+      { key: 'bookings', title: 'Outstanding Balance Due', value: `₹${outstandingBal.toLocaleString()}`, desc: 'Deposit ledger accounts', icon: <DollarSign size={24} color="#ea580c" /> },
+      { key: 'venues', title: 'Overdue Payments', value: `₹${overdueBal.toLocaleString()}`, desc: 'Flagged system holds', icon: <AlertTriangle size={24} color="#ef4444" /> },
       { key: 'tasks', title: 'Invoicing Reviews', value: tasks.filter(t => !t.completed).length, desc: 'Transactions sign-off checks', icon: <CheckSquare size={24} color="#3b82f6" /> },
     ];
   } else {
     // Sales Mgr / Default
     roleKpiCards = [
-      { key: 'revenue', title: 'Gross Contract Value', value: `$${grossRevenue.toLocaleString()}`, desc: `Cash Collected: $${totalPaid.toLocaleString()}`, icon: <DollarSign size={24} color="#22c55e" /> },
+      { key: 'revenue', title: 'Gross Contract Value', value: `₹${grossRevenue.toLocaleString()}`, desc: `Cash Collected: ₹${totalPaid.toLocaleString()}`, icon: <DollarSign size={24} color="#22c55e" /> },
       { key: 'bookings', title: 'Active event Bookings', value: totalBookings, desc: `${confirmedCount} confirmed, ${tentativeCount} tentative`, icon: <Calendar size={24} color="#3b82f6" /> },
       { key: 'utilization', title: 'Conversion Funnel Yield', value: '78%', desc: 'Hold-to-Confirm ratio', icon: <TrendingUp size={24} color="#9e2a2b" />, progress: 78 },
       { key: 'tasks', title: 'Sales Followups', value: tasks.filter(t => !t.completed).length, desc: 'BEO guidelines proposals', icon: <CheckSquare size={24} color="#f59e0b" /> },

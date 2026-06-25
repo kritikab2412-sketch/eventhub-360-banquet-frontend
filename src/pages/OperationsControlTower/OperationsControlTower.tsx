@@ -233,8 +233,7 @@ export const OperationsControlTower: React.FC = () => {
                   
                   <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                     <Tag color="cyan">{event.status.toUpperCase()}</Tag>
-                    <span style={{ fontSize: '14px', fontWeight: 700, color: '#9e2a2b' }}>
-                      ${event.billingAmount.toLocaleString()}
+                    <span style={{ fontSize: '14px', fontWeight: 700, color: '#9e2a2b' }}>₹{event.billingAmount.toLocaleString()}
                     </span>
                   </div>
                 </div>

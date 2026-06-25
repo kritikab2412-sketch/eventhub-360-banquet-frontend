@@ -269,15 +269,15 @@ export const ClientPortal: React.FC = () => {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ color: '#64748b' }}>Total Contract Value:</span>
-                  <span style={{ fontWeight: 700 }}>${activeBooking.billingAmount.toLocaleString()}</span>
+                  <span style={{ fontWeight: 700 }}>₹{activeBooking.billingAmount.toLocaleString()}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', color: '#16a34a' }}>
                   <span>Payments Credited:</span>
-                  <span style={{ fontWeight: 700 }}>-${activeBooking.depositReceived.toLocaleString()}</span>
+                  <span style={{ fontWeight: 700 }}>-₹{activeBooking.depositReceived.toLocaleString()}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', color: '#ea580c' }}>
                   <span>Balance Outstanding:</span>
-                  <span style={{ fontWeight: 800 }}>${activeBooking.balanceDue.toLocaleString()}</span>
+                  <span style={{ fontWeight: 800 }}>₹{activeBooking.balanceDue.toLocaleString()}</span>
                 </div>
 
                 <Divider style={{ margin: '8px 0' }} />

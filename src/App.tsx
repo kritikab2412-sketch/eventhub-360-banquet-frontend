@@ -27,12 +27,12 @@ import { AIAssistant } from './components/AIAssistant/AIAssistant';
 import { bookingService } from './services/api';
 import { showToast } from './components/Feedback/ToastAlerts';
 
-import { Modal, Input, Select, DatePicker, Row, Col, Button, List, Divider, Tag } from 'antd';
+import { Modal, Input, Select, DatePicker, Row, Col, Button, List, Divider, Tag, Card } from 'antd';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as zod from 'zod';
 import dayjs from 'dayjs';
-import { Search, Sparkles } from 'lucide-react';
+import { Search, Sparkles, Lock, User as UserIcon } from 'lucide-react';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -51,10 +51,114 @@ const bookingSchema = zod.object({
   date: zod.any().refine(val => !!val, 'Select a date'),
   startTime: zod.string().min(1, 'Select a start time'),
   endTime: zod.string().min(1, 'Select an end time'),
-  billingAmount: zod.number().min(100, 'Minimum charge is $100')
+  billingAmount: zod.number().min(100, 'Minimum charge is ₹100')
 });
 
 type BookingFormValues = zod.infer<typeof bookingSchema>;
+
+const LoginScreen: React.FC = () => {
+  const { login } = useAuth();
+  const [username, setUsername] = useState('Alex Johnson');
+  const [chosenRole, setChosenRole] = useState('Banquet Mgr');
+
+  const handleLoginSubmit = () => {
+    if (!username.trim()) {
+      showToast.error('Please enter a username');
+      return;
+    }
+    login(username, chosenRole);
+  };
+
+  return (
+    <div style={{
+      height: '100vh',
+      width: '100vw',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      background: 'linear-gradient(135deg, #4c1112 0%, #9e2a2b 100%)',
+      fontFamily: 'Outfit, sans-serif'
+    }}>
+      <Card 
+        style={{ 
+          width: 400, 
+          borderRadius: '24px', 
+          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.3)',
+          border: '1px solid rgba(255,255,255,0.1)',
+          background: 'rgba(255, 255, 255, 0.95)',
+          overflow: 'hidden'
+        }}
+        bodyStyle={{ padding: '32px' }}
+      >
+        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+          <div style={{ 
+            display: 'inline-flex', 
+            padding: '12px', 
+            background: 'rgba(158, 42, 43, 0.1)', 
+            borderRadius: '16px',
+            color: '#9e2a2b',
+            marginBottom: '16px'
+          }}>
+            <Lock size={32} />
+          </div>
+          <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#1e293b', margin: 0 }}>EventHub 360</h2>
+          <span style={{ fontSize: '11px', color: '#64748b', fontWeight: 600, display: 'block', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '4px' }}>
+            Banquet Management Portal
+          </span>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div>
+            <label style={{ display: 'block', fontSize: '13px', fontWeight: 600, color: '#475569', marginBottom: '8px' }}>Username</label>
+            <Input 
+              prefix={<UserIcon size={16} color="#64748b" />}
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+              placeholder="Enter your username"
+              size="large"
+              style={{ borderRadius: '10px' }}
+            />
+          </div>
+
+          <div>
+            <label style={{ display: 'block', fontSize: '13px', fontWeight: 600, color: '#475569', marginBottom: '8px' }}>Select Workspace Role</label>
+            <Select 
+              value={chosenRole}
+              onChange={setChosenRole}
+              size="large"
+              style={{ width: '100%' }}
+              dropdownStyle={{ borderRadius: '12px' }}
+              options={[
+                { value: 'Banquet Mgr', label: 'Banquet Manager' },
+                { value: 'Sales Mgr', label: 'Sales Manager' },
+                { value: 'Kitchen Mgr', label: 'Kitchen Manager' },
+                { value: 'Finance', label: 'Finance Officer' }
+              ]}
+            />
+          </div>
+
+          <Button 
+            type="primary" 
+            size="large" 
+            icon={<Sparkles size={16} />}
+            onClick={handleLoginSubmit}
+            style={{ 
+              backgroundColor: '#9e2a2b', 
+              borderColor: '#9e2a2b', 
+              borderRadius: '10px',
+              height: '46px',
+              fontWeight: 700,
+              marginTop: '10px',
+              boxShadow: '0 4px 6px -1px rgba(158, 42, 43, 0.2)'
+            }}
+          >
+            Sign In to Workspace
+          </Button>
+        </div>
+      </Card>
+    </div>
+  );
+};
 
 const MainAppContent: React.FC = () => {
   const [activeView, setActiveView] = useState<string>('dashboard');
@@ -81,7 +185,7 @@ const MainAppContent: React.FC = () => {
 
   const guestCountWatch = watch('guestCount');
 
-  // React to guest counts to estimate billing ($85 per guest default)
+  // React to guest counts to estimate billing (₹85 per guest default)
   React.useEffect(() => {
     setValue('billingAmount', (guestCountWatch || 0) * 85);
   }, [guestCountWatch, setValue]);
@@ -218,6 +322,10 @@ const MainAppContent: React.FC = () => {
         return <ProtectedRoute><Dashboard /></ProtectedRoute>;
     }
   };
+
+  if (!user) {
+    return <LoginScreen />;
+  }
 
   return (
     <>
@@ -422,7 +530,7 @@ const MainAppContent: React.FC = () => {
           </Row>
 
           <div style={{ marginBottom: '24px' }}>
-            <label className="form-label">Estimated Bill ($)</label>
+            <label className="form-label">Estimated Bill (₹)</label>
             <Controller
               name="billingAmount"
               control={control}

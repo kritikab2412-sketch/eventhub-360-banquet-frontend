@@ -376,7 +376,7 @@ export const bookingService = {
       'Recorded Payment',
       'Finance',
       id,
-      `Recorded financial update for ${finalBooking.clientName}. Total billing is $${finalBooking.billingAmount}, deposit received: $${finalBooking.depositReceived}`,
+      `Recorded financial update for ${finalBooking.clientName}. Total billing is ₹${finalBooking.billingAmount}, deposit received: ₹${finalBooking.depositReceived}`,
       JSON.stringify(oldBooking),
       JSON.stringify(finalBooking)
     );

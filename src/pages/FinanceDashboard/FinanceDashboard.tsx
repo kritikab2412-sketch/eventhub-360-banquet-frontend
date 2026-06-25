@@ -117,28 +117,28 @@ export const FinanceDashboard: React.FC = () => {
       )
     },
     {
-      title: 'Total Bill ($)',
+      title: 'Total Bill (₹)',
       dataIndex: 'billingAmount',
       key: 'billingAmount',
-      render: (val: number) => <span style={{ fontWeight: 600 }}>${val.toLocaleString()}</span>
+      render: (val: number) => <span style={{ fontWeight: 600 }}>₹{val.toLocaleString()}</span>
     },
     {
       title: 'Deposit Received',
       dataIndex: 'depositReceived',
       key: 'depositReceived',
-      render: (val: number) => <span style={{ color: '#16a34a', fontWeight: 600 }}>${val.toLocaleString()}</span>
+      render: (val: number) => <span style={{ color: '#16a34a', fontWeight: 600 }}>₹{val.toLocaleString()}</span>
     },
     {
       title: 'Balance Due',
       dataIndex: 'balanceDue',
       key: 'balanceDue',
-      render: (val: number) => <span style={{ color: val > 0 ? '#ea580c' : '#64748b', fontWeight: 600 }}>${val.toLocaleString()}</span>
+      render: (val: number) => <span style={{ color: val > 0 ? '#ea580c' : '#64748b', fontWeight: 600 }}>₹{val.toLocaleString()}</span>
     },
     {
       title: 'Refunds Logged',
       dataIndex: 'refundedAmount',
       key: 'refundedAmount',
-      render: (val: number) => <span>{val > 0 ? `$${val.toLocaleString()}` : '-'}</span>
+      render: (val: number) => <span>{val > 0 ? `₹${val.toLocaleString()}` : '-'}</span>
     },
     {
       title: 'Ledger Status',
@@ -207,7 +207,7 @@ export const FinanceDashboard: React.FC = () => {
             <Statistic 
               title={<span style={{ color: '#64748b', fontSize: '13px' }}>Gross Contracted</span>}
               value={grossRevenue}
-              prefix="$"
+              prefix="₹"
               valueStyle={{ fontWeight: 800, color: '#1e293b', fontSize: '20px' }}
             />
           </Card>
@@ -219,7 +219,7 @@ export const FinanceDashboard: React.FC = () => {
             <Statistic 
               title={<span style={{ color: '#64748b', fontSize: '13px' }}>Total Cash In</span>}
               value={depositsReceived}
-              prefix="$"
+              prefix="₹"
               valueStyle={{ fontWeight: 800, color: '#16a34a', fontSize: '20px' }}
             />
           </Card>
@@ -231,7 +231,7 @@ export const FinanceDashboard: React.FC = () => {
             <Statistic 
               title={<span style={{ color: '#64748b', fontSize: '13px' }}>Outstanding Balance</span>}
               value={outstandingPayments}
-              prefix="$"
+              prefix="₹"
               valueStyle={{ fontWeight: 800, color: '#ea580c', fontSize: '20px' }}
             />
           </Card>
@@ -243,7 +243,7 @@ export const FinanceDashboard: React.FC = () => {
             <Statistic 
               title={<span style={{ color: '#64748b', fontSize: '13px' }}>Overdue Deposits</span>}
               value={overduePayments}
-              prefix="$"
+              prefix="₹"
               valueStyle={{ fontWeight: 800, color: '#ef4444', fontSize: '20px' }}
             />
           </Card>
@@ -255,7 +255,7 @@ export const FinanceDashboard: React.FC = () => {
             <Statistic 
               title={<span style={{ color: '#64748b', fontSize: '13px' }}>Refunded Assets</span>}
               value={totalRefunds}
-              prefix="$"
+              prefix="₹"
               valueStyle={{ fontWeight: 800, color: '#64748b', fontSize: '20px' }}
             />
           </Card>
@@ -334,7 +334,7 @@ export const FinanceDashboard: React.FC = () => {
             </div>
 
             <div style={{ marginBottom: '16px' }}>
-              <label className="form-label">Total Contract billing ($)</label>
+              <label className="form-label">Total Contract billing (₹)</label>
               <Input 
                 type="number"
                 value={billingAmountInput}
@@ -345,7 +345,7 @@ export const FinanceDashboard: React.FC = () => {
             </div>
 
             <div style={{ marginBottom: '16px' }}>
-              <label className="form-label">Payments Received ($)</label>
+              <label className="form-label">Payments Received (₹)</label>
               <Input 
                 type="number"
                 value={depositReceivedInput}
@@ -356,7 +356,7 @@ export const FinanceDashboard: React.FC = () => {
             </div>
 
             <div style={{ marginBottom: '24px' }}>
-              <label className="form-label">Refunds Logged ($)</label>
+              <label className="form-label">Refunds Logged (₹)</label>
               <Input 
                 type="number"
                 value={refundedAmountInput}

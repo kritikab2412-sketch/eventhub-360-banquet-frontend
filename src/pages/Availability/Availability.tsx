@@ -178,7 +178,7 @@ export const Availability: React.FC = () => {
                           <div style={{ fontSize: '12px' }}>
                             <p><strong>Venue:</strong> {b.venueName}</p>
                             <p><strong>Schedule:</strong> {b.startTime} - {b.endTime}</p>
-                            <p><strong>Billing:</strong> ${b.billingAmount.toLocaleString()}</p>
+                            <p><strong>Billing:</strong>₹{b.billingAmount.toLocaleString()}</p>
                             <p><strong>Status:</strong> <Tag color={getStatusColor(b.status)}>{b.status}</Tag></p>
                           </div>
                         }
