@@ -48,10 +48,19 @@ const bookingSchema = zod.object({
   eventType: zod.string().min(1, 'Select an event type'),
   guestCount: zod.number().min(1, 'Guests must be greater than 0'),
   venueId: zod.string().min(1, 'Select a venue'),
-  date: zod.any().refine(val => !!val, 'Select a date'),
+  startDate: zod.any().refine(val => !!val, 'Select a start date'),
+  endDate: zod.any().refine(val => !!val, 'Select an end date'),
   startTime: zod.string().min(1, 'Select a start time'),
   endTime: zod.string().min(1, 'Select an end time'),
   billingAmount: zod.number().min(100, 'Minimum charge is ₹100')
+}).refine(data => {
+  if (data.startDate && data.endDate) {
+    return dayjs(data.endDate).isAfter(dayjs(data.startDate)) || dayjs(data.endDate).isSame(dayjs(data.startDate), 'day');
+  }
+  return true;
+}, {
+  message: 'End date must be on or after start date',
+  path: ['endDate']
 });
 
 type BookingFormValues = zod.infer<typeof bookingSchema>;
@@ -169,14 +178,15 @@ const MainAppContent: React.FC = () => {
 
   const { user, role } = useAuth();
 
-  const { control, handleSubmit, setValue, watch, reset, formState: { errors } } = useForm<BookingFormValues>({
+  const { control, handleSubmit, setValue, watch, reset, formState: { errors } } = useForm<any>({
     resolver: zodResolver(bookingSchema),
     defaultValues: {
       clientName: '',
       eventType: 'Wedding',
       guestCount: 150,
       venueId: 'venue-1',
-      date: null,
+      startDate: null,
+      endDate: null,
       startTime: '18:00',
       endTime: '22:00',
       billingAmount: 12750
@@ -251,8 +261,9 @@ const MainAppContent: React.FC = () => {
     }
   });
 
-  const handleCreateBooking = (data: BookingFormValues) => {
-    const formattedDate = dayjs(data.date).format('YYYY-MM-DD');
+  const handleCreateBooking = (data: any) => {
+    const formattedStartDate = dayjs(data.startDate).format('YYYY-MM-DD');
+    const formattedEndDate = dayjs(data.endDate).format('YYYY-MM-DD');
     const venueNameMap: Record<string, string> = {
       'venue-1': 'Imperial Grand Ballroom',
       'venue-2': 'Zenith Sky Terrace',
@@ -266,7 +277,9 @@ const MainAppContent: React.FC = () => {
       guestCount: data.guestCount,
       venueId: data.venueId,
       venueName: venueNameMap[data.venueId] || 'Imperial Grand Ballroom',
-      date: formattedDate,
+      date: formattedStartDate,
+      startDate: formattedStartDate,
+      endDate: formattedEndDate,
       startTime: data.startTime,
       endTime: data.endTime,
       status: 'Confirmed' as const,
@@ -420,7 +433,7 @@ const MainAppContent: React.FC = () => {
               control={control}
               render={({ field }) => <Input {...field} placeholder="e.g. Miller Wedding reception" />}
             />
-            {errors.clientName && <span className="form-error">{errors.clientName.message}</span>}
+            {errors.clientName && <span className="form-error">{(errors.clientName as any).message}</span>}
           </div>
 
           <Row gutter={16}>
@@ -451,13 +464,13 @@ const MainAppContent: React.FC = () => {
                   control={control}
                   render={({ field }) => <Input type="number" {...field} onChange={e => field.onChange(parseInt(e.target.value) || 0)} />}
                 />
-                {errors.guestCount && <span className="form-error">{errors.guestCount.message}</span>}
+                {errors.guestCount && <span className="form-error">{(errors.guestCount as any).message}</span>}
               </div>
             </Col>
           </Row>
 
           <Row gutter={16}>
-            <Col span={12}>
+            <Col span={24}>
               <div style={{ marginBottom: '16px' }}>
                 <label className="form-label">Select Room / Venue</label>
                 <Controller
@@ -474,15 +487,29 @@ const MainAppContent: React.FC = () => {
                 />
               </div>
             </Col>
+          </Row>
+
+          <Row gutter={16}>
             <Col span={12}>
               <div style={{ marginBottom: '16px' }}>
-                <label className="form-label">Booking Date</label>
+                <label className="form-label">Start Date</label>
                 <Controller
-                  name="date"
+                  name="startDate"
                   control={control}
                   render={({ field }) => <DatePicker {...field} style={{ width: '100%' }} />}
                 />
-                {errors.date && <span className="form-error">{(errors.date as any).message}</span>}
+                {errors.startDate && <span className="form-error">{(errors.startDate as any).message}</span>}
+              </div>
+            </Col>
+            <Col span={12}>
+              <div style={{ marginBottom: '16px' }}>
+                <label className="form-label">End Date</label>
+                <Controller
+                  name="endDate"
+                  control={control}
+                  render={({ field }) => <DatePicker {...field} style={{ width: '100%' }} />}
+                />
+                {errors.endDate && <span className="form-error">{(errors.endDate as any).message}</span>}
               </div>
             </Col>
           </Row>

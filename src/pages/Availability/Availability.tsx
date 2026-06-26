@@ -40,9 +40,17 @@ export const Availability: React.FC = () => {
     setTimeout(() => {
       setCheckingAvailability(false);
       // Check if there is any overlapping booking for September 5th on Venue 1
-      const isOverlapped = bookings.some(
-        b => b.venueId === quickVenueId && b.date === quickDate && b.status !== 'Blocked'
-      );
+      const isOverlapped = bookings.some(b => {
+        const bStart = b.startDate || b.date;
+        const bEnd = b.endDate || b.date;
+        return (
+          b.venueId === quickVenueId && 
+          b.status !== 'Blocked' &&
+          b.status !== 'Archived' &&
+          quickDate <= bEnd && 
+          quickDate >= bStart
+        );
+      });
       
       if (isOverlapped) {
         setCheckResult('conflict');

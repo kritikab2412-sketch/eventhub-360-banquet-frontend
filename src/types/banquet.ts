@@ -48,6 +48,8 @@ export interface Booking {
   venueId: string;
   venueName: string;
   date: string; // YYYY-MM-DD
+  startDate: string; // YYYY-MM-DD
+  endDate: string; // YYYY-MM-DD
   startTime: string; // HH:MM
   endTime: string; // HH:MM
   setupTime?: string; // HH:MM

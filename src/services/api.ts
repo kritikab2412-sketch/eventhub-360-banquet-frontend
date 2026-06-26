@@ -209,14 +209,19 @@ export const bookingService = {
     
     // Check conflicts (Availability Engine)
     bookingsDB = getStoredData<Booking[]>('eh_bookings', INITIAL_BOOKINGS);
-    const isConflict = bookingsDB.some(b => 
-      b.venueId === booking.venueId && 
-      b.date === booking.date &&
-      b.status !== 'Blocked' &&
-      b.status !== 'Archived' &&
-      ((booking.startTime >= b.startTime && booking.startTime < b.endTime) ||
-       (booking.endTime > b.startTime && booking.endTime <= b.endTime))
-    );
+    const isConflict = bookingsDB.some(b => {
+      const bStart = b.startDate || b.date;
+      const bEnd = b.endDate || b.date;
+      return (
+        b.venueId === booking.venueId && 
+        b.status !== 'Blocked' &&
+        b.status !== 'Archived' &&
+        booking.startDate <= bEnd && 
+        booking.endDate >= bStart &&
+        booking.startTime < b.endTime && 
+        booking.endTime > b.startTime
+      );
+    });
 
     const billingAmt = booking.billingAmount || booking.guestCount * 85;
     const rawBooking: Booking = {
@@ -245,7 +250,7 @@ export const bookingService = {
 
     if (isConflict) {
       // Trigger a conflict alert automatically
-      const conflictMsg = `Double Booking Warning: Conflict detected for ${booking.venueName} on ${booking.date}`;
+      const conflictMsg = `Double Booking Warning: Conflict detected for ${booking.venueName} from ${booking.startDate} to ${booking.endDate}`;
       showToast.pushAlert('Conflict Detected', conflictMsg, 'error');
     }
 
