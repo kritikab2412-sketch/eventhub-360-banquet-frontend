@@ -14,11 +14,15 @@ export const Availability: React.FC = () => {
   const { user } = useAuth();
   
   // Quick Booking State
-  const [quickDate, setQuickDate] = useState('2024-09-05');
+  const [quickDate, setQuickDate] = useState(dayjs().format('YYYY-MM-DD'));
   const [quickVenueId, setQuickVenueId] = useState('venue-1');
   const [quickVenueName, setQuickVenueName] = useState('Imperial Grand Ballroom');
   const [checkingAvailability, setCheckingAvailability] = useState(false);
   const [checkResult, setCheckResult] = useState<'available' | 'conflict' | null>(null);
+
+  // Dynamic Calendar month state (defaults to September 2024 to show mock data first)
+  const [currentMonth, setCurrentMonth] = useState(dayjs('2024-09-01'));
+  const todayStr = dayjs().format('YYYY-MM-DD');
 
   const { data: bookingsRes, isLoading: loadingBookings } = useQuery({
     queryKey: ['bookings'],
@@ -63,19 +67,25 @@ export const Availability: React.FC = () => {
   };
 
   // Calendar Day Generator
-  // September 2024 begins on a Sunday. 
-  // Let's create a grid starting Monday, Aug 26 to Sunday, Oct 6.
-  const startDay = dayjs('2024-08-26');
+  // Calculates the start day of the monthly calendar grid dynamically.
+  const startOfMonth = currentMonth.startOf('month');
+  const offset = startOfMonth.day() === 0 ? 6 : startOfMonth.day() - 1;
+  const startDay = startOfMonth.subtract(offset, 'day');
   const daysGrid = Array.from({ length: 42 }).map((_, idx) => {
     const currentDay = startDay.add(idx, 'day');
     const dateStr = currentDay.format('YYYY-MM-DD');
-    const dayBookings = bookings.filter(b => b.date === dateStr);
+    // Filter bookings that overlap this calendar day (supporting date ranges)
+    const dayBookings = bookings.filter(b => {
+      const bStart = b.startDate || b.date;
+      const bEnd = b.endDate || b.date;
+      return dateStr >= bStart && dateStr <= bEnd;
+    });
     return {
       day: currentDay.date(),
-      month: currentDay.month(), // 0-indexed
+      month: currentDay.month(),
       year: currentDay.year(),
       dateStr,
-      isCurrentMonth: currentDay.month() === 8, // September is 8
+      isCurrentMonth: currentDay.month() === currentMonth.month(),
       bookings: dayBookings
     };
   });
@@ -110,7 +120,7 @@ export const Availability: React.FC = () => {
           <span style={{ fontSize: '12px', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             Banquets / Calendar
           </span>
-          <h1 style={{ fontSize: '28px', fontWeight: 800, color: '#1e293b', margin: '4px 0 0 0' }}>September 2024</h1>
+          <h1 style={{ fontSize: '28px', fontWeight: 800, color: '#1e293b', margin: '4px 0 0 0' }}>{currentMonth.format('MMMM YYYY')}</h1>
         </div>
 
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
@@ -123,9 +133,9 @@ export const Availability: React.FC = () => {
 
           {/* Navigation Arrows */}
           <div style={{ display: 'flex', alignItems: 'center', background: '#f1f5f9', borderRadius: '8px' }}>
-            <Button type="text" icon={<ChevronLeft size={16} />} style={{ border: 0 }} />
-            <span style={{ fontSize: '13px', fontWeight: 600, padding: '0 8px' }}>Today</span>
-            <Button type="text" icon={<ChevronRight size={16} />} style={{ border: 0 }} />
+            <Button type="text" icon={<ChevronLeft size={16} />} style={{ border: 0 }} onClick={() => setCurrentMonth(prev => prev.subtract(1, 'month'))} />
+            <span style={{ fontSize: '13px', fontWeight: 600, padding: '0 8px', cursor: 'pointer' }} onClick={() => setCurrentMonth(dayjs())}>Today</span>
+            <Button type="text" icon={<ChevronRight size={16} />} style={{ border: 0 }} onClick={() => setCurrentMonth(prev => prev.add(1, 'month'))} />
           </div>
 
           <Button icon={<Filter size={16} />}>Filter Venues</Button>
@@ -165,14 +175,14 @@ export const Availability: React.FC = () => {
                   <div style={{ 
                     fontSize: '13px', 
                     fontWeight: 600, 
-                    color: dayItem.dateStr === '2024-09-05' ? '#a8201a' : '#1e293b',
+                    color: dayItem.dateStr === todayStr ? '#a8201a' : '#1e293b',
                     display: 'inline-flex',
                     justifyContent: 'center',
                     alignItems: 'center',
                     width: '24px',
                     height: '24px',
                     borderRadius: '50%',
-                    backgroundColor: dayItem.dateStr === '2024-09-05' ? '#ffe5e5' : 'transparent'
+                    backgroundColor: dayItem.dateStr === todayStr ? '#ffe5e5' : 'transparent'
                   }}>
                     {dayItem.day}
                   </div>
@@ -228,7 +238,7 @@ export const Availability: React.FC = () => {
               <div>
                 <label className="form-label">Date</label>
                 <DatePicker 
-                  defaultValue={dayjs('2024-09-05')}
+                  defaultValue={dayjs()}
                   onChange={(date) => date && setQuickDate(date.format('YYYY-MM-DD'))}
                   style={{ width: '100%', borderRadius: '8px' }}
                 />
